@@ -6,9 +6,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js",
+    "check-updates": "ncu --cooldown 3"
   },
   "dependencies": {
-    "chalk": "^5.6.2"
+    "chalk": "^6.0.0",
+    "npm-check-updates": "^23.1.0"
   }
 }
