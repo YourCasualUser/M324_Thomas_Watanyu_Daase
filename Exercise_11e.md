@@ -12,6 +12,7 @@ How I checked the SHAs: I ran `git ls-remote --tags` on the official repos and t
 |---|---|---|
 | `actions/checkout` | v7.0.1 | `3d3c42e5aac5ba805825da76410c181273ba90b1` |
 | `actions/setup-node` | v7.1.0 | `949feb2413d6458794dcd2491c4babbbce0c15c1` |
+| `thollander/actions-comment-pull-request` | v3.0.1 | `24bffb9b452ba05a4f3f77933840a6a841d1b32b` |
 
 ## Task 1: Set up CI
 
@@ -24,8 +25,32 @@ What `ci.yml` does:
 - **`npm ci`:** installs the exact versions from the lockfile.
 - **Lint / format / test:** `npm run lint`, `npx prettier --check .` (only checks, doesn't change files) and `npm test`. If one fails, the job fails.
 
-Node version: `"22"`, same as my `Dockerfile` (`node:22-slim`). ESLint 10 and mocha 12 both need 22.13 or newer, so 22 works.
-
 `npm ci` vs `npm install`: `npm ci` wipes `node_modules` and installs exactly what's in the lockfile, so every run is the same. If the lockfile is missing or doesn't match `package.json`, it errors out. `npm install` can pick newer versions and change the lockfile.
 
 I also removed the `start` script from `package.json`, since CI does lint, format and test now.
+
+I then did every round of changing something and seeing if github actions succeeds or not. After doing this 3 times, I returned it back to its original form and merged the PR.
+
+## Task 2: Comment on a pull request
+
+`pr-comment.yml` posts a comment on a PR as soon as it's opened, using Comment Pull Request v3.0.1 (pinned to a SHA, see the table).
+
+- **Event:** `pull_request` with type `opened`, so it runs once when the PR is created, not on every push.
+- **Permission:** only `pull-requests: write`. The action creates the comment through the GitHub API, and that needs write access to pull requests. Everything else is off, because I set the permissions on the job.
+
+So after doing a pull request, a comment should appear saying 'Thanks for opening this pull request! Lint, format and tests run automatically. Please wait for the checks to pass before merging.'.
+
+PR: [[pull-request](https://github.com/YourCasualUser/M324_Thomas_Watanyu_Daase/pull/2)]
+
+## Task 3: Gollum
+
+`gollum.yml` runs when someone creates or edits a page in the repo's wiki (that's the `gollum` event). It writes a small change log into the job summary: who edited the wiki and which pages changed.
+
+Problems I had to solve:
+- **Reading the event:** the event data has a list of the changed pages (`github.event.pages`) with the action, title and link. I turn it into JSON and read it with `jq`.
+- **Untrusted input:** page titles are written by users, so I pass them through `env` and never put them directly into the shell script (that could run commands).
+- **Permissions:** the job doesn't read or write anything in the repo, so `permissions: {}` turns everything off.
+- **Where it runs:** `gollum` workflows only run from the default branch, so the file has to be merged into `main` before it can be tested.
+- **The wiki itself:** it has to be enabled (Settings, Features) and have a first page before it can be edited.
+
+Test: TODO (edit a wiki page, then link the workflow run and note anything that went wrong).
