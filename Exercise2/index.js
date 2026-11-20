@@ -1,7 +1,7 @@
 export const sum = (a, b) => {
     return a + b
 }
-console.log("Sum: ", sum(1, 2))
+console.log('Sum: ', sum(1, 2))
 
 const oldSchool = 5
 if (oldSchool === 5) {
