@@ -12,6 +12,7 @@ How I checked the SHAs: I ran `git ls-remote --tags` on the official repos and t
 |---|---|---|
 | `actions/checkout` | v7.0.1 | `3d3c42e5aac5ba805825da76410c181273ba90b1` |
 | `actions/setup-node` | v7.1.0 | `949feb2413d6458794dcd2491c4babbbce0c15c1` |
+| `thollander/actions-comment-pull-request` | v3.0.1 | `24bffb9b452ba05a4f3f77933840a6a841d1b32b` |
 
 ## Task 1: Set up CI
 
@@ -29,3 +30,12 @@ Node version: `"22"`, same as my `Dockerfile` (`node:22-slim`). ESLint 10 and mo
 `npm ci` vs `npm install`: `npm ci` wipes `node_modules` and installs exactly what's in the lockfile, so every run is the same. If the lockfile is missing or doesn't match `package.json`, it errors out. `npm install` can pick newer versions and change the lockfile.
 
 I also removed the `start` script from `package.json`, since CI does lint, format and test now.
+
+## Task 2: Comment on a pull request
+
+`pr-comment.yml` posts a comment on a PR as soon as it's opened, using Comment Pull Request v3.0.1 (pinned to a SHA, see the table).
+
+- **Event:** `pull_request` with type `opened`, so it runs once when the PR is created, not on every push.
+- **Permission:** only `pull-requests: write`. The action creates the comment through the GitHub API, and that needs write access to pull requests. Everything else is off, because I set the permissions on the job.
+
+PR with the comment: TODO
