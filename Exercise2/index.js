@@ -3,7 +3,7 @@ export const sum = (a, b) => {
 }
 console.log('Sum: ', sum(1, 2))
 
-const oldSchool = 5
+var oldSchool = 5
 if (oldSchool === 5) {
     console.log('loose comparison')
 }
