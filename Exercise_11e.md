@@ -14,6 +14,7 @@ How I checked the SHAs: I ran `git ls-remote --tags` on the official repos and t
 | `actions/setup-node` | v7.1.0 | `949feb2413d6458794dcd2491c4babbbce0c15c1` |
 | `thollander/actions-comment-pull-request` | v3.0.1 | `24bffb9b452ba05a4f3f77933840a6a841d1b32b` |
 | `crate-ci/typos` | v1.52.2 | `276087d9a4f06398b3e04825487805e2d7375888` |
+| `hugoalh/scan-virus-ghaction` | v0.20.1 | `99c81e8991ad1074a14e5f22a21bce9be035e14e` |
 
 ## Task 1: Set up CI
 
@@ -67,3 +68,15 @@ I chose to test this, because it can be a good thing to have a spell checker in 
 
 Here's the result of that github actions after I manually ran it to test it: [[actions-test](https://github.com/YourCasualUser/M324_Thomas_Watanyu_Daase/actions/runs/45349787925)]
 It shows the typo, which was located inside of the index.js and mentions that "Youre" should've been "Your" instead.
+
+## Task 5: Scan for malware
+
+`virus_scan.yml` uses [Scan Virus](https://github.com/hugoalh/scan-virus-ghaction) v0.20.1. I read its README and `action.yml` first: it runs in a Docker container (so it needs an Ubuntu runner), needs no special permissions, and scans with ClamAV by default.
+
+- **Events:** `pull_request` and `push` on `main` (check code before and after it's merged), a weekly `schedule` (virus signatures change, so an old commit can look different later), and `workflow_dispatch` for manual tests.
+- **What it scans:** all files in the checked-out repository, using ClamAV signatures. The job output lists what was scanned and what was found.
+- **Limits:** it only finds *known* malware, so new or custom malware gets through. It can miss hidden, packed or encrypted files (the README says it gives no guarantee). The last release is from October 2023. The Docker image inside the action is pinned by tag, not by hash, so my SHA pin doesn't fully freeze it. It downloads the signatures every run.
+- **Testing without real malware:** the second job, `scan-detection-test`, builds the harmless EICAR test string while the job runs (it is never committed), scans it, and fails unless the action's `found` output is `true`. So I know the scanner really detects something.
+- **Skipping:** after testing I added `if: ${{ false }}` at job level in both jobs. In GitHub both jobs show as skipped.
+
+Results: TODO

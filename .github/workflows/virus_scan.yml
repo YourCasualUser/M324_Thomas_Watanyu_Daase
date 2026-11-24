@@ -39,8 +39,7 @@ jobs:
           persist-credentials: false
 
       # EICAR is the harmless industry standard test string that every virus
-      # scanner detects. It is built at runtime in two parts, so it is never
-      # committed and the file itself does not set off antivirus on my computer.
+      # scanner detects.
       - name: Create harmless EICAR test file
         run: |
           mkdir eicar-test
