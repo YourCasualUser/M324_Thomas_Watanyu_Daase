@@ -1,0 +1,58 @@
+name: Virus scan
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "43 5 * * 3" # every Wednesday at 05:43 UTC, because virus signatures change
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scan-repository:
+    # After testing, uncomment the next line to skip this job:
+    # if: ${{ false }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Scan repository files for malware
+        uses: hugoalh/scan-virus-ghaction@99c81e8991ad1074a14e5f22a21bce9be035e14e # v0.20.1
+
+  scan-detection-test:
+    # After testing, uncomment the next line to skip this job:
+    # if: ${{ false }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # EICAR is the harmless industry standard test string that every virus
+      # scanner detects.
+      - name: Create harmless EICAR test file
+        run: |
+          mkdir eicar-test
+          printf '%s%s' 'X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR' '-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*' > eicar-test/eicar.txt
+
+      - name: Scan (this scan is expected to find the test file)
+        id: scan
+        continue-on-error: true
+        uses: hugoalh/scan-virus-ghaction@99c81e8991ad1074a14e5f22a21bce9be035e14e # v0.20.1
+
+      - name: Check that the scanner detected the test file
+        env:
+          FOUND: ${{ steps.scan.outputs.found }}
+        run: |
+          echo "found=${FOUND}"
+          test "${FOUND}" = "true"
