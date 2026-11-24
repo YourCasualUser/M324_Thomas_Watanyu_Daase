@@ -16,8 +16,7 @@ permissions:
 
 jobs:
   scan-repository:
-    # After testing, uncomment the next line to skip this job:
-    # if: ${{ false }}
+    if: ${{ false }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -29,8 +28,7 @@ jobs:
         uses: hugoalh/scan-virus-ghaction@99c81e8991ad1074a14e5f22a21bce9be035e14e # v0.20.1
 
   scan-detection-test:
-    # After testing, uncomment the next line to skip this job:
-    # if: ${{ false }}
+    if: ${{ false }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
