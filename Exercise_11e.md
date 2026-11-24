@@ -48,3 +48,6 @@ PR: [[pull-request](https://github.com/YourCasualUser/M324_Thomas_Watanyu_Daase/
 
 Problems I had to solve:
 - *The Wiki itself*: it had to be enabled in settings, and the repository had to be set public again to even get access to it.
+
+after fixing these issues, I got to test it out.
+Here's the Result after I added a new wiki page: [[wiki-actions-result](https://github.com/YourCasualUser/M324_Thomas_Watanyu_Daase/actions/runs/45347428709)]
