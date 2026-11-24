@@ -47,10 +47,4 @@ PR: [[pull-request](https://github.com/YourCasualUser/M324_Thomas_Watanyu_Daase/
 `gollum.yml` runs when someone creates or edits a page in the repo's wiki (that's the `gollum` event). It writes a small change log into the job summary: who edited the wiki and which pages changed.
 
 Problems I had to solve:
-- **Reading the event:** the event data has a list of the changed pages (`github.event.pages`) with the action, title and link. I turn it into JSON and read it with `jq`.
-- **Untrusted input:** page titles are written by users, so I pass them through `env` and never put them directly into the shell script (that could run commands).
-- **Permissions:** the job doesn't read or write anything in the repo, so `permissions: {}` turns everything off.
-- **Where it runs:** `gollum` workflows only run from the default branch, so the file has to be merged into `main` before it can be tested.
-- **The wiki itself:** it has to be enabled (Settings, Features) and have a first page before it can be edited.
-
-Test: TODO (edit a wiki page, then link the workflow run and note anything that went wrong).
+- *The Wiki itself*: it had to be enabled in settings, and the repository had to be set public again to even get access to it.
