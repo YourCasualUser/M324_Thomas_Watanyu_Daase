@@ -80,3 +80,6 @@ It shows the typo, which was located inside of the index.js and mentions that "Y
 - **Skipping:** after testing I added `if: ${{ false }}` at job level in both jobs. In GitHub both jobs show as skipped.
 
 Results: [[virus-scan](https://github.com/YourCasualUser/M324_Thomas_Watanyu_Daase/actions/runs/45352339585)]
+
+after testing if it actually works, I added the `if: ${{ false }}` which skips both of the jobs.
+Results: [[skipped-job](https://github.com/YourCasualUser/M324_Thomas_Watanyu_Daase/pull/7)]
