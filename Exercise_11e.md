@@ -13,6 +13,7 @@ How I checked the SHAs: I ran `git ls-remote --tags` on the official repos and t
 | `actions/checkout` | v7.0.1 | `3d3c42e5aac5ba805825da76410c181273ba90b1` |
 | `actions/setup-node` | v7.1.0 | `949feb2413d6458794dcd2491c4babbbce0c15c1` |
 | `thollander/actions-comment-pull-request` | v3.0.1 | `24bffb9b452ba05a4f3f77933840a6a841d1b32b` |
+| `crate-ci/typos` | v1.52.2 | `276087d9a4f06398b3e04825487805e2d7375888` |
 
 ## Task 1: Set up CI
 
@@ -47,7 +48,19 @@ PR: [[pull-request](https://github.com/YourCasualUser/M324_Thomas_Watanyu_Daase/
 `gollum.yml` runs when someone creates or edits a page in the repo's wiki (that's the `gollum` event). It writes a small change log into the job summary: who edited the wiki and which pages changed.
 
 Problems I had to solve:
+
 - *The Wiki itself*: it had to be enabled in settings, and the repository had to be set public again to even get access to it.
 
 after fixing these issues, I got to test it out.
 Here's the Result after I added a new wiki page: [[wiki-actions-result](https://github.com/YourCasualUser/M324_Thomas_Watanyu_Daase/actions/runs/45347428709)]
+
+## Task 4: GitHub Actions Marketplace
+
+`custom_action.yml` uses [typos](https://github.com/crate-ci/typos) v1.52.2, a spell checker for source code and docs. It scans the files in the repo and fails the job if it finds a misspelled word, and it lists the file, the line and the suggested fix. I checked the source and the maintenance first: it's an open source project with regular releases and the last commit was in November 2026. It only reads files, so the job needs just `contents: read`.
+
+I chose to test this, because it can be a good thing to have a spell checker in a repo if many contributors add to the project, and contributors come from all over the world. Depending on each person they have a different profficiency in english, so checking in the docs whatever can be good to uphold that quality.
+
+- **Schedule:** every Monday at 06:17 UTC (`cron: "17 6 * * 1"`).
+- **Manual test:** I added `workflow_dispatch`, so I started it from the Actions tab (pick the workflow, then Run workflow).
+- **Pinning:** the tag `v1.52.2` is an annotated tag, so it has two hashes. I used the commit hash (the `^{}` line from `git ls-remote`), because the tag object hash doesn't work in `uses:`.
+- **Result:** link workflow
