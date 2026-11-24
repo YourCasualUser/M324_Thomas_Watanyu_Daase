@@ -10,7 +10,7 @@ if (oldSchool === 5) {
 
 const age = 18
 if (age < 18) {
-    console.log('Youre old!')
+    console.log("You're old!")
 } else {
     console.log('Such a baby!')
 }
