@@ -79,4 +79,4 @@ It shows the typo, which was located inside of the index.js and mentions that "Y
 - **Testing without real malware:** the second job, `scan-detection-test`, builds the harmless EICAR test string while the job runs (it is never committed), scans it, and fails unless the action's `found` output is `true`. So I know the scanner really detects something.
 - **Skipping:** after testing I added `if: ${{ false }}` at job level in both jobs. In GitHub both jobs show as skipped.
 
-Results: TODO
+Results: [[virus-scan](https://github.com/YourCasualUser/M324_Thomas_Watanyu_Daase/actions/runs/45352339585)]
