@@ -64,3 +64,6 @@ I chose to test this, because it can be a good thing to have a spell checker in 
 - **Manual test:** I added `workflow_dispatch`, so I started it from the Actions tab (pick the workflow, then Run workflow).
 - **Pinning:** the tag `v1.52.2` is an annotated tag, so it has two hashes. I used the commit hash (the `^{}` line from `git ls-remote`), because the tag object hash doesn't work in `uses:`.
 - **Result:** link workflow
+
+Here's the result of that github actions after I manually ran it to test it: [[actions-test](https://github.com/YourCasualUser/M324_Thomas_Watanyu_Daase/actions/runs/45349787925)]
+It shows the typo, which was located inside of the index.js and mentions that "Youre" should've been "Your" instead.
